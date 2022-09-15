@@ -1,0 +1,143 @@
+#include <stdio.h>
+#include <math.h>
+#include<stdlib.h>
+
+float poly(float a[], int, float);  /* to calculate the value of polynomial equation*/
+float deriv(float a[], int, float);    //to calculate the value of first derivative equation/ 
+
+int fact(int num) //to find factorial of the numbers
+{
+       if(num)
+       return(num*fact(num-1));
+       else
+       return 1;
+}
+int main()
+{
+    float x, a[10],c[5], y1, dy1;
+    int deg, i, j, b[10];
+
+    printf("Enter the degree of polynomial equation: ");
+    scanf("%d", &deg);
+
+    printf("Enter the value of x for which the equation is to be evaluated: ");
+    scanf("%f", &x);
+
+    for (i = 0; i <= deg; i++) {
+        printf("Enter the coefficient of x to the power %d: ", i);
+        scanf("%f", &a[i]);
+        b[i]=i;
+    }    
+
+    y1 = poly(a, deg, x);
+    c[1]=y1;
+    dy1 = deriv(a, deg, x);
+    c[2]=dy1;
+    printf("The value of polynomial equation for the value of x = %.2f is: %.2f", x, y1);
+    printf("\nThe value of the first derivative of the polynomial equation at x = %.2f is: %.2f", x, dy1);
+    
+    //To find and store the coeff values of first derivatives for further derivatives/
+    for (j=1;j<=deg;j++) {
+
+    a[j-1]=a[j]*b[j];
+    b[j-1] = b[j]-1;
+    
+    }
+    deg=deg-1;
+    
+    dy1 = deriv(a, deg, x);
+    c[3]=dy1;
+    printf("\nThe value of the second derivative of the polynomial equation at x = %.2f is: %.2f", x, dy1);
+    
+    //To find and store the coeff values of second derivatives for third derivative/
+    for (j=1;j<=deg;j++) {
+
+    a[j-1]=a[j]*b[j];
+    
+    }
+    deg=deg-1;
+    
+    dy1 = deriv(a, deg, x);
+    c[4]=dy1;
+    printf("\nThe value of the third derivative of the polynomial equation at x = %.2f is: %.2f", x, dy1);
+    
+    /* print array of results*/
+    for(int k=1; k<=4;k++)  {
+        printf("\n %.2f",c[k]);
+    }
+    int num;
+    int values[4];
+    float reciprocal[4];
+    int n, e, arr[4];
+    
+    printf("\nenter number to find it's factorial\n");
+    scanf("%d",&num);
+    for(int num=0;num<=3;num++){
+    printf("Factorial of %d is %d\n",num,fact(num));
+   }
+   // elements of an array
+   for(int i = 0; i <4; i++){
+       values[num-i]=fact(num-i);  
+  }
+  printf("\nThe value of the reciprocals:\n");
+  for(int i=0;i<=3;i++)
+{ 
+    reciprocal[i]= pow(values[i],-1);
+    }
+    for(int i=0;i<=3;i++){
+  printf("\n%.2f\n",reciprocal[i]); }
+  
+ printf("enter the value of a\n");
+ scanf("%d",&e);
+ 
+ for(n=0;n<=3;n++){
+    printf("(x-%d)^%d\n",e,n);
+    }
+      printf("Displaying product of 1/factorial*(x-a)^n:\n");
+    // storing lements of an array
+          arr[0]=n-4;
+          arr[1]=n-3;
+          arr[2]=n-2;
+          arr[3]=n-1;
+     // multiplying reciprocal and values array
+ 
+   printf("%.2f . (x-%d)^%d\n",reciprocal[0],e,arr[0]);
+   printf("%.2f . (x-%d)^%d\n",reciprocal[1],e,arr[1]);
+   printf("%.2f . (x-%d)^%d\n",reciprocal[2],e,arr[2]);
+   printf("%.2f . (x-%d)^%d\n",reciprocal[3],e,arr[3]);
+
+    
+    printf("\nThe taylor series of the required function at point %d is:    %.2f*(x-%d)^%d*%.2f + %.2f*(x-%d)^%d*%.2f + %.2f*(x-%d)^%d*%.2f + %.2f*(x-%d)^%d*%.2f + %.2f*(x-%d)^%d*%.2f\n ",e,c[1],e,arr[0],reciprocal[0],c[2],e,arr[1],reciprocal[1],c[3],e,arr[2],reciprocal[2],c[4],e,arr[3],reciprocal[3]);
+    
+    return 0;
+}
+
+/* function for finding the value of polynomial at some value of x */
+
+float poly(float a[], int deg, float x)
+{
+    float p;
+    int i;
+
+    p = a[deg];
+
+    for (i = deg; i >= 1; i--) {
+        p = (a[i - 1] + x * p);
+    }
+
+    return p;
+}
+
+/* function for finding the derivative at some value of x */
+float deriv(float a[], int deg, float x)
+{
+    float d[10], pd = 0, ps;
+    int i;
+
+    for (i = 0; i <= deg; i++) {
+        ps = pow(x, deg - (i + 1));
+        d[i] = (deg - i) * a[deg - i] * ps;
+        pd = pd + d[i];
+    }
+    return pd;
+}
